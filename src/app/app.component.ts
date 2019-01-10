@@ -9,7 +9,6 @@ export class AppComponent {
   title = 'directive-test';
 
   @ViewChild('inputElement') inputEl: ElementRef;
-
   filterLetters = '';
 
   ingredients = [
@@ -23,6 +22,5 @@ export class AppComponent {
   onInputChange() {
     this.filterLetters = this.inputEl.nativeElement.value;
   }
-
 
 }
