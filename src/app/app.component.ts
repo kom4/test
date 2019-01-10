@@ -10,6 +10,7 @@ export class AppComponent {
 
   @ViewChild('inputElement') inputEl: ElementRef;
   filterLetters = '';
+  activeItem: number;
 
   ingredients = [
     {name: 'Bread', amount: 3},
@@ -21,6 +22,14 @@ export class AppComponent {
 
   onInputChange() {
     this.filterLetters = this.inputEl.nativeElement.value;
+  }
+
+  setIndex(index: number) {
+    this.activeItem = index;
+  }
+
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
   }
 
 }

@@ -1,32 +1,40 @@
-<div class="container">
+<div class="container">  
+
+    <app-ingredient-control
+      [ingredient]="ingredients[activeItem]"
+      [index]="activeItem"
+      (indexToDelete)="deleteIngredient($event)">
+    </app-ingredient-control>
+
+  <hr>
   <div class="row">
-    <div class="col-lg-3 offset-lg-4">
-      <div class="form-group text-center">
-        <label for="name">Ingredient</label>
+    <div class="col-lg-3 offset-lg-2">      
+      <div class="form-group">
+        <label for="nameFilter">Filter ingredient: </label>
         <input
+          autocomplete="off"
           #inputElement
           type="text"
-          name="name"
-          class="form-control m-2"
+          name="nameFilter"
+          class="form-control"
           (input)="onInputChange()">
+        </div>        
       </div>
-    </div>
-  </div>
-  <div class="row"
-  *ngIf="ingredients">
-    <div class="col-lg-5 offset-lg-3">
-      <ul class="list-group">
-        <div  *ngFor="let ingredient of ingredients">
+    <div class="col-lg-4" *ngIf="ingredients">
+      <div 
+        class="list-group"
+        *ngFor="let ingredient of ingredients; let index = index">
 
-          <li
-          style="cursor: pointer"
-          class="list-group-item"
-          *appFilter="filterLetters; Ingredient: ingredient.name">
-            {{ ingredient.name }} : {{ ingredient.amount}}
-          </li>
+          <app-ingredient   
+            (indexOfHighlight)="setIndex($event)"        
+            *appFilter="filterLetters; Ingredient: ingredient.name"
+            [ingredient]="ingredient"
+            [index]="index"
+            [active]="index === activeItem">
+          </app-ingredient>     
 
+       
         </div>
-      </ul>
     </div>
   </div>
 </div>

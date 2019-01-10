@@ -10,10 +10,10 @@ export class FilterDirective {
     // console.log(this.appFilterIngredient.toLowerCase().startsWith(value));
 
 
-    if (value === '') {
+    if (value.trim() === '') {
       this.vcrRef.clear();
       this.vcrRef.createEmbeddedView(this.template);
-    } else if (this.appFilterIngredient.toLowerCase().startsWith(value)) {
+    } else if (this.appFilterIngredient.toLowerCase().startsWith(value.trim())) {
       this.vcrRef.clear();
       this.vcrRef.createEmbeddedView(this.template);
     } else {

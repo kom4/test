@@ -3,11 +3,15 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { FilterDirective } from './filter.directive';
+import { IngredientComponent } from './ingredient/ingredient.component';
+import { IngredientControlComponent } from './ingredient-control/ingredient-control.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FilterDirective
+    FilterDirective,
+    IngredientComponent,
+    IngredientControlComponent,
   ],
   imports: [
     BrowserModule
