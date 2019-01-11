@@ -1,17 +1,22 @@
-<div class="row mt-4">
-  <div class="form-group col-lg-3 offset-lg-3">
-    <label for="">Name</label>
-    <input #nameInput type="text" class="form-control">
-    <span style="color: red; font-size: 0.9em" [ngClass]="{hidden: !nameFieldValue}">Field required.</span>
-  </div>  
-  <div class="form-group col-lg-2 ml-3">
-    <label for="">Amount</label>
-    <input #amountInput type="number" class="form-control">
-    <span style="color: red; font-size: 0.9em" [ngClass]="{hidden: !amountFieldValue}">Field required.</span>
-  </div>  
-  <div class="col-lg-6 offset-lg-3 align-content-around">
-    <button class="btn btn-primary ml-3">Add ingredient</button>
-    <button #editButton class="btn btn-info ml-1" (click)="setValues()" disabled>{{editing ? 'Save ingredient' : 'Edit ingredient' }}</button>
-    <button #deleteButton class="btn btn-danger ml-1" (click)="deleteIngredient()" disabled>Delete ingredient</button>
+<div class="row">
+
+  <div class="col-lg-11 offset-lg-2 align-content-around mb-4">
+    <button #addButton class="btn btn-sm btn-primary ml-3" (click)="createNewValues()">Add ingredient</button>
+    <button #editButton class="btn btn-sm btn-info ml-1" (click)="setValues()" disabled>{{editing ? 'Save ingredient' : 'Edit ingredient' }}</button>
+    <button #deleteButton class="btn btn-sm btn-danger ml-1" (click)="deleteIngredient()" disabled>Delete ingredient</button>
   </div>
+
+  <div class="col-lg-10 offset-lg-2 row" [hidden]="!editing">
+    <div class="form-group col-lg-12">
+      <label for="">Name</label>
+      <input #nameInput type="text" class="form-control">
+      <span #nameWarning class="hidden redLabel">Field required.</span>
+    </div>
+    <div class="form-group col-lg-12">
+      <label for="">Amount</label>
+      <input #amountInput type="number" class="form-control">
+      <span #amountWarning class="hidden redLabel">Field required.</span>
+    </div>
+  </div>
+
 </div>

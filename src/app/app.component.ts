@@ -28,8 +28,16 @@ export class AppComponent {
     this.activeItem = index;
   }
 
-  deleteIngredient(index: number) {
-    this.ingredients.splice(index, 1);
+  changeIngredient(action: string) {
+    if(action === 'delete' && this.activeItem !== null) {
+      this.ingredients.splice(this.activeItem, 1);
+    } else if (action === 'unselect') {
+      this.activeItem = null;
+    }
+  }
+
+  editIngredient(ingredient) {
+    this.ingredients[this.activeItem] = ingredient;
   }
 
 }
