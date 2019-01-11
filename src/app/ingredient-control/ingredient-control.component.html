@@ -3,7 +3,7 @@
   <div class="col-lg-11 offset-lg-2 align-content-around mb-4">
     <button #addButton class="btn btn-sm btn-primary ml-3" (click)="createNewValues()">Add ingredient</button>
     <button #editButton class="btn btn-sm btn-info ml-1" (click)="setValues()" disabled>{{editing ? 'Save ingredient' : 'Edit ingredient' }}</button>
-    <button #deleteButton class="btn btn-sm btn-danger ml-1" (click)="deleteIngredient()" disabled>Delete ingredient</button>
+    <button #deleteButton class="btn btn-sm btn-danger ml-1" (click)="deleteIngredientOrCancelAction()" disabled>{{newIngredient ? 'Cancel action' : 'Delete ingredient' }}</button>
   </div>
 
   <div class="col-lg-10 offset-lg-2 row" [hidden]="!editing">

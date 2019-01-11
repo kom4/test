@@ -6,7 +6,7 @@
         [ingredient]="ingredients[activeItem]"
         [index]="activeItem"
         (indexToChange)="changeIngredient($event)"
-        (ingredientToEdit)="editIngredient($event)">
+        (ingredientToEditOrCreate)="editOrCreateIngredient($event)">
       </app-ingredient-control>
     </div>
     <div class="col-lg-4" *ngIf="ingredients">

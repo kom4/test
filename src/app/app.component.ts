@@ -36,8 +36,13 @@ export class AppComponent {
     }
   }
 
-  editIngredient(ingredient) {
-    this.ingredients[this.activeItem] = ingredient;
+  editOrCreateIngredient(ingredient:{name: string, amount: number}) {
+    if(this.activeItem !== null) {
+      this.ingredients[this.activeItem] = ingredient;
+    } else {
+      this.ingredients.push(ingredient)
+    }
+    
   }
 
 }

@@ -7,7 +7,7 @@ import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, 
 })
 export class IngredientControlComponent implements OnInit, DoCheck {
 
-  constructor( private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) { }
 
   private ingredient: {name: string, amount: number} = null;
   @ViewChild('nameInput') name: ElementRef;
@@ -18,29 +18,33 @@ export class IngredientControlComponent implements OnInit, DoCheck {
   @ViewChild('nameWarning') nameWarning: ElementRef;
   @ViewChild('amountWarning') amountWarning: ElementRef;
   @Output('indexToChange') emitIndexToChange = new EventEmitter<string>();
-  @Output('ingredientToEdit') emitIngredientToEdit = new EventEmitter<{name: string, amount: number}>();
+  @Output('ingredientToEditOrCreate') emitIngredientToEditOrCreate = new EventEmitter<{name: string, amount: number}>();
   @Input() index: number;
   @Input('ingredient') set setIngredient(value: {name: string, amount: number}) {
+    this.renderer.addClass(this.nameWarning.nativeElement, 'hidden');
+    this.renderer.addClass(this.amountWarning.nativeElement, 'hidden');
     this.ingredient = value;
     this.name.nativeElement.value = '';
     this.amount.nativeElement.value = '';
     this.editing = false;
   }
   editing: boolean;
+  newIngredient = false;
   nameFieldValid = true;
   amountFieldValid = true;
 
-
   ngOnInit() { }
 
-  ngDoCheck() {
+  ngDoCheck() {   
     if(this.ingredient) {
       this.deleteButton.nativeElement.disabled = false;
       this.editButton.nativeElement.disabled = false;
-    }
-    if(!this.editing && this.index === null) {
-      this.deleteButton.nativeElement.disabled = true;
-      this.editButton.nativeElement.disabled = true;
+      this.newIngredient = false;
+    } else if(!this.editing && this.index) {
+      this.deleteButton.nativeElement.disabled = false;
+      this.editButton.nativeElement.disabled = false;
+    } else if(this.newIngredient) {
+        this.editing = true;      
     }
   }
 
@@ -51,27 +55,54 @@ export class IngredientControlComponent implements OnInit, DoCheck {
       this.editing = true;
     } else {
       this.validateFields();
-      if (this.nameFieldValid && this.amountFieldValid) {
-        this.emitIngredientToEdit.emit({
+      if (this.nameFieldValid && this.amountFieldValid && this.index) {
+        console.log('saving');        
+        this.emitIngredientToEditOrCreate.emit({
           name: this.name.nativeElement.value,
           amount: this.amount.nativeElement.value,
         });
+      } else if (this.nameFieldValid && this.amountFieldValid && this.newIngredient)  {             
+        this.emitIngredientToEditOrCreate.emit({
+          name: this.name.nativeElement.value,
+          amount: this.amount.nativeElement.value,
+        });        
+        this.name.nativeElement.value = '';
+        this.amount.nativeElement.value = '';        
+        this.deleteButton.nativeElement.disabled = true;
+        this.editButton.nativeElement.disabled = true;
+        this.newIngredient = false;
+        this.editing = false;
       }
     }
   }
 
-  deleteIngredient() {
-    if (confirm('Are you sure you want to delete this ingredient?')) {
-      this.emitIndexToChange.emit('delete');
+  deleteIngredientOrCancelAction() {
+    if(!this.newIngredient) {           
+      if (confirm('Are you sure you want to delete this ingredient?')) {        
+        this.emitIndexToChange.emit('delete');
+      }
+    } else {
+      this.renderer.addClass(this.nameWarning.nativeElement, 'hidden');
+      this.renderer.addClass(this.amountWarning.nativeElement, 'hidden');
+      this.deleteButton.nativeElement.disabled = true;
+      this.editButton.nativeElement.disabled = true;
+      this.name.nativeElement.value = '';
+      this.amount.nativeElement.value = '';
+      this.editing = false;
+      this.newIngredient = false;
     }
   }
 
   createNewValues() {
-    this.editing = !this.editing && true;
+    this.editing = !this.editing; 
+    this.newIngredient = true;     
     this.name.nativeElement.value = '';
-    this.amount.nativeElement.value = '';
-    this.emitIndexToChange.emit('unselect');
-
+    this.amount.nativeElement.value = ''; 
+    this.deleteButton.nativeElement.disabled = false;
+    this.editButton.nativeElement.disabled = false;
+    if(this.index !== null) {
+      this.emitIndexToChange.emit('unselect');    
+    } 
   }
 
   validateFields() {
